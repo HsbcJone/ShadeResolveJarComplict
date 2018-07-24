@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ResolveJarComplict</groupId>
+    <artifactId>JarComplict</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <!-- 將依賴包(1個或者多個)中的<relocations><patten下的報名進行替換 爲了解決包衝突>-->
+    <properties>
+        <janusgraph.version>0.2.1</janusgraph.version>
+    </properties>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.janusgraph/janusgraph-core -->
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-core</artifactId>
+            <version>${janusgraph.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-hbase</artifactId>
+            <version>${janusgraph.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-es</artifactId>
+            <version>${janusgraph.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpasyncclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpcore-nio -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore-nio</artifactId>
+            <version>4.4.5</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpmime -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.4.1</version>
+        </dependency>
+
+
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.guava</pattern>
+                                    <shadedPattern>com.mengxp.google.guava</shadedPattern>
+                                </relocation>
+                                <!--<relocation>-->
+                                <!--<pattern>org.joda</pattern>-->
+                                <!--<shadedPattern>my.elasticsearch.joda</shadedPattern>-->
+                                <!--</relocation>-->
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>com.mengxp.google.common</shadedPattern>
+                                </relocation>
+                                <!--<relocation>-->
+                                <!--<pattern>org.janusgraph</pattern>-->
+                                <!--<shadedPattern>org.mengxp.janusgraph</shadedPattern>-->
+                                <!--</relocation>-->
+
+                                <relocation>
+                                    <pattern>org.apache.http.util</pattern>
+                                    <shadedPattern>org.mengxp.apache.http.util</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer" />
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
